@@ -12,56 +12,22 @@ class UserServices {
 
   // get profile
   async getSelf(userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: userId || '65dd1e23f1b2c3d4e5f6a7b8',
-        name: 'Mock Test Visitor',
-        email: 'test-visitor@gmail.com',
-        role: 'USER',
-        status: 'ACTIVE'
-      };
-    }
     return this.model.findById(userId);
   }
+
   // register new user
   async register(payload: any) {
     if (payload.password !== payload.confirmPassword) {
       throw new CustomError(httpStatus.BAD_REQUEST, 'Passwords do not match');
     }
 
-    if (mongoose.connection.readyState !== 1) {
-      const mockUser = {
-        _id: '65dd1e23f1b2c3d4e5f6a7b8',
-        name: payload.name || 'Mock Test Visitor',
-        email: payload.email || 'test-visitor@gmail.com',
-        role: 'USER',
-        status: 'ACTIVE'
-      };
-      const token = generateToken({ _id: mockUser._id, email: mockUser.email });
-      return { token, user: mockUser };
-    }
-
     const user = await this.model.create(payload);
-
     const token = generateToken({ _id: user._id, email: user.email });
     return { token, user };
   }
 
   // login existing user
   async login(payload: { email: string; password: string }) {
-    if (mongoose.connection.readyState !== 1) {
-      // Mock login for offline testing
-      const mockUser = {
-        _id: '65dd1e23f1b2c3d4e5f6a7b8',
-        name: 'Mock Test Visitor',
-        email: payload.email || 'test-visitor@gmail.com',
-        role: 'USER',
-        status: 'ACTIVE'
-      };
-      const token = generateToken({ _id: mockUser._id, email: mockUser.email });
-      return { token, user: mockUser };
-    }
-
     const user = await this.model.findOne({ email: payload.email }).select('+password');
 
     if (user) {
@@ -76,17 +42,11 @@ class UserServices {
 
   // update user profile
   async updateProfile(id: string, payload: Partial<IUser>) {
-    if (mongoose.connection.readyState !== 1) {
-      return { _id: id, ...payload };
-    }
-    return this.model.findByIdAndUpdate(id, payload);
+    return this.model.findByIdAndUpdate(id, payload, { new: true });
   }
 
   // change Password
   async changePassword(userId: string, payload: { oldPassword: string; newPassword: string }) {
-    if (mongoose.connection.readyState !== 1) {
-      return { message: 'Password changed successfully (mock)' };
-    }
     const user = await this.model.findById(userId).select('+password');
     if (!user) throw new CustomError(httpStatus.NOT_FOUND, 'User not found');
 

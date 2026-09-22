@@ -20,13 +20,6 @@ class BaseServices<T> {
    * Create new
    */
   async create(payload: any, userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: 'mock_' + this.modelName.toLowerCase() + '_' + Date.now(),
-        ...payload,
-        user: userId
-      };
-    }
     payload.user = userId;
     return this.model.create(payload);
   }
@@ -35,12 +28,6 @@ class BaseServices<T> {
    * Update
    */
   async update(id: string, payload: any) {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: id,
-        ...payload
-      };
-    }
     await this._isExists(id);
     return this.model.findByIdAndUpdate(id, payload, { new: true, runValidators: true });
   }
@@ -49,20 +36,11 @@ class BaseServices<T> {
    * Delete
    */
   async delete(id: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: id,
-        message: 'Mock deleted successfully'
-      };
-    }
     await this._isExists(id);
     return this.model.findByIdAndDelete(id);
   }
 
   protected async _isExists(id: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return;
-    }
     if (!(await this.model.findById(id))) {
       throw new CustomError(httpStatus.NOT_FOUND, this.modelName + ' is not found!');
     }

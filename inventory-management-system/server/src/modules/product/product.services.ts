@@ -83,60 +83,6 @@ class ProductServices extends BaseServices<any> {
    * Get All product of user
    */
   async readAll(query: Record<string, unknown> = {}, userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      const mockProducts = [
-        {
-          _id: 'prod_1',
-          name: 'Premium Laptop',
-          skuId: 'LAP-101',
-          category: { _id: 'cat_1', name: 'Electronics' },
-          price: 65000,
-          stock: 45,
-          seller: { _id: 'sell_1', name: 'Apex Suppliers' },
-          brand: { _id: 'brand_1', name: 'Dell' },
-          size: 'MEDIUM',
-          description: 'High performance laptop'
-        },
-        {
-          _id: 'prod_2',
-          name: 'Wireless Headset',
-          skuId: 'HDS-202',
-          category: { _id: 'cat_1', name: 'Electronics' },
-          price: 3500,
-          stock: 95,
-          seller: { _id: 'sell_2', name: 'Mega Store' },
-          brand: { _id: 'brand_2', name: 'Sony' },
-          size: 'SMALL',
-          description: 'Noise cancelling headset'
-        },
-        {
-          _id: 'prod_4',
-          name: 'USB-C Cable',
-          skuId: 'CBL-303',
-          category: { _id: 'cat_2', name: 'Accessories' },
-          price: 450,
-          stock: 12,
-          seller: { _id: 'sell_1', name: 'Apex Suppliers' },
-          brand: { _id: 'brand_3', name: 'Belkin' },
-          size: 'SMALL',
-          description: 'Fast charging cable'
-        },
-        {
-          _id: 'prod_5',
-          name: 'Bluetooth Speaker',
-          skuId: 'SPK-404',
-          category: { _id: 'cat_2', name: 'Accessories' },
-          price: 2500,
-          stock: 8,
-          seller: { _id: 'sell_2', name: 'Mega Store' },
-          brand: { _id: 'brand_4', name: 'JBL' },
-          size: 'SMALL',
-          description: 'Waterproof portable speaker'
-        }
-      ];
-      return { data: mockProducts, totalCount: [{ total: mockProducts.length }] };
-    }
-
     let data = await this.model.aggregate([...matchStagePipeline(query, userId), ...sortAndPaginatePipeline(query)]);
 
     const totalCount = await this.model.aggregate([
@@ -222,16 +168,9 @@ class ProductServices extends BaseServices<any> {
   }
 
   /**
-   * Create new product
+   * Create new product / add stock
    */
   async addToStock(id: string, payload: Pick<IProduct, 'seller' | 'stock'>, userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: id,
-        stock: payload.stock,
-        message: 'Mock Stock Added Successfully'
-      };
-    }
     try {
       const seller = await Seller.findById(payload.seller);
       const product = await this.model.findByIdAndUpdate(id, { $inc: { stock: payload.stock } });

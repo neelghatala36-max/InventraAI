@@ -32,6 +32,15 @@ app.use(
   })
 );
 
+// Health check & ping routes for Render / Uptime monitors
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
+});
+
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'InventraAI Server API is active and running.' });
+});
+
 // application routes
 app.use('/api/v1', rootRouter);
 

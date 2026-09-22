@@ -11,31 +11,17 @@ class SellerServices extends BaseServices<any> {
   }
 
   /**
-   * Create new sale and decrease product stock
+   * Create new seller
    */
   async create(payload: any, userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: 'sell_mock_' + Date.now(),
-        ...payload,
-        user: userId
-      };
-    }
     payload.user = userId;
     return this.model.create(payload);
   }
 
   /**
-   *  Get all sale
+   *  Get all sellers
    */
   async readAll(query: Record<string, unknown> = {}, userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      const mockSellers = [
-        { _id: 'sell_1', name: 'Apex Suppliers', email: 'apex@suppliers.com', contactNo: '+1-555-1234' },
-        { _id: 'sell_2', name: 'Mega Store', email: 'mega@store.com', contactNo: '+1-555-5678' }
-      ];
-      return { data: mockSellers, totalCount: [{ total: mockSellers.length }] };
-    }
     const search = query.search ? query.search : '';
 
     const data = await this.model.aggregate([
@@ -74,7 +60,7 @@ class SellerServices extends BaseServices<any> {
     return { data, totalCount };
   }
 
-  // get single sale
+  // get single seller
   async read(id: string, userId: string) {
     await this._isExists(id);
     return this.model.findOne({ user: new Types.ObjectId(userId), _id: id });

@@ -20,27 +20,14 @@ class SaleServices extends BaseServices<any> {
     payload.user = userId;
     payload.totalPrice = productPrice * quantity;
 
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: 'sale_mock_' + Date.now(),
-        product: payload.product,
-        buyerName: payload.buyerName || 'Mock Buyer',
-        productName: payload.productName || 'Mock Product',
-        quantity: quantity,
-        totalPrice: productPrice * quantity,
-        productPrice: productPrice,
-        date: payload.date || new Date()
-      };
-    }
-
     const product = await Product.findById(payload.product);
 
-    if (quantity > product!.stock) {
-      throw new CustomError(400, `${quantity} product are not available in stock!`);
+    if (!product || quantity > product.stock) {
+      throw new CustomError(400, `${quantity} products are not available in stock!`);
     }
 
     try {
-      await Product.findByIdAndUpdate(product?._id, { $inc: { stock: -quantity } });
+      await Product.findByIdAndUpdate(product._id, { $inc: { stock: -quantity } });
       const result = await this.model.create(payload);
 
       return result;
@@ -53,21 +40,6 @@ class SaleServices extends BaseServices<any> {
    *  Get all sale
    */
   async readAll(query: Record<string, unknown> = {}, userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      const mockSales = [
-        {
-          _id: 'sale_mock_1',
-          productName: 'Premium Laptop',
-          buyerName: 'Mock Buyer 1',
-          quantity: 2,
-          productPrice: 65000,
-          totalPrice: 130000,
-          date: new Date()
-        }
-      ];
-      return { data: mockSales, totalCount: [{ total: mockSales.length }] };
-    }
-    // const date = query.date ? query.date : null;
     const search = query.search ? (query.search as string) : '';
 
     const data = await this.model.aggregate([
@@ -103,13 +75,6 @@ class SaleServices extends BaseServices<any> {
   }
 
   async readAllWeeks(userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return [
-        { week: 33, year: 2026, totalQuantity: 10, totalRevenue: 10000 },
-        { week: 34, year: 2026, totalQuantity: 15, totalRevenue: 15000 },
-        { week: 35, year: 2026, totalQuantity: 25, totalRevenue: 25000 }
-      ];
-    }
     return await this.model.aggregate([
       {
         $match: {
@@ -146,11 +111,6 @@ class SaleServices extends BaseServices<any> {
   }
 
   async readAllYearly(userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return [
-        { year: 2026, totalQuantity: 150, totalRevenue: 150000 }
-      ];
-    }
     return await this.model.aggregate([
       {
         $match: {
@@ -184,15 +144,6 @@ class SaleServices extends BaseServices<any> {
   }
 
   async readAllDaily(userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return [
-        { day: 25, month: 8, year: 2026, totalQuantity: 15, totalRevenue: 15000 },
-        { day: 26, month: 8, year: 2026, totalQuantity: 22, totalRevenue: 22000 },
-        { day: 27, month: 8, year: 2026, totalQuantity: 35, totalRevenue: 35000 },
-        { day: 28, month: 8, year: 2026, totalQuantity: 40, totalRevenue: 40000 },
-        { day: 29, month: 8, year: 2026, totalQuantity: 50, totalRevenue: 50000 }
-      ];
-    }
     return await this.model.aggregate([
       {
         $match: {
@@ -232,11 +183,6 @@ class SaleServices extends BaseServices<any> {
   }
 
   async readAllMonths(userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return [
-        { month: 8, year: 2026, totalQuantity: 150, totalRevenue: 150000 }
-      ];
-    }
     return await this.model.aggregate([
       {
         $match: {
@@ -274,16 +220,6 @@ class SaleServices extends BaseServices<any> {
 
   // get single sale
   async read(id: string, userId: string) {
-    if (mongoose.connection.readyState !== 1) {
-      return {
-        _id: id,
-        product: { _id: 'prod_1', name: 'Premium Laptop', price: 65000, stock: 45 },
-        buyerName: 'Mock Buyer',
-        quantity: 1,
-        totalPrice: 65000,
-        date: new Date()
-      };
-    }
     await this._isExists(id);
 
     return this.model.findOne({ user: new Types.ObjectId(userId), _id: id }).populate({

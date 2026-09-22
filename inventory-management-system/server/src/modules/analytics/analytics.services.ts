@@ -4,15 +4,6 @@ import Sale from '../sale/sale.model';
 import Product from '../product/product.model';
 
 const getSalesTrends = async () => {
-  if (mongoose.connection.readyState !== 1) {
-    return [
-      { _id: '2026-08-25', totalSales: 15, totalRevenue: 15000 },
-      { _id: '2026-08-26', totalSales: 22, totalRevenue: 22000 },
-      { _id: '2026-08-27', totalSales: 35, totalRevenue: 35000 },
-      { _id: '2026-08-28', totalSales: 40, totalRevenue: 40000 },
-      { _id: '2026-08-29', totalSales: 50, totalRevenue: 50000 },
-    ];
-  }
   return await Sale.aggregate([
     {
       $group: {
@@ -27,13 +18,6 @@ const getSalesTrends = async () => {
 };
 
 const getTopProducts = async () => {
-  if (mongoose.connection.readyState !== 1) {
-    return [
-      { _id: 'prod_1', productName: 'Premium Laptop', totalSold: 120 },
-      { _id: 'prod_2', productName: 'Wireless Headset', totalSold: 95 },
-      { _id: 'prod_3', productName: 'Smart Watch', totalSold: 70 },
-    ];
-  }
   return await Sale.aggregate([
     {
       $group: {
@@ -48,15 +32,6 @@ const getTopProducts = async () => {
 };
 
 const getInventoryInsights = async () => {
-  if (mongoose.connection.readyState !== 1) {
-    return {
-      lowStock: [
-        { _id: 'prod_4', name: 'USB-C Cable', stock: 12, price: 450, seller: 'sell_1' },
-        { _id: 'prod_5', name: 'Bluetooth Speaker', stock: 8, price: 2500, seller: 'sell_1' },
-      ],
-      totalValue: 750000,
-    };
-  }
   const lowStock = await Product.find({ stock: { $lt: 500 } }).limit(5); // Increased to 500 to show some low stock warnings given high aggregated dataset stock
   const totalValue = await Product.aggregate([
     { $group: { _id: null, totalValue: { $sum: { $multiply: ['$price', '$stock'] } } } },
@@ -69,14 +44,6 @@ const getInventoryInsights = async () => {
 };
 
 const getDemandPrediction = async (productId: string) => {
-  if (mongoose.connection.readyState !== 1) {
-    return {
-      skuId: 'prod_1 - Premium Laptop',
-      prediction: 45,
-      period: 'next 7 days',
-      historicalAverage: '6.4'
-    };
-  }
   if (!mongoose.Types.ObjectId.isValid(productId)) {
     return {
       skuId: productId,
@@ -112,26 +79,6 @@ const getDemandPrediction = async (productId: string) => {
 };
 
 const getRestockRecommendation = async () => {
-  if (mongoose.connection.readyState !== 1) {
-    return [
-      {
-        skuId: 'prod_4 - USB-C Cable',
-        currentStock: 12,
-        dailyDemand: 5,
-        daysOfSupply: '2.4',
-        reorderQuantity: 150,
-        shouldRestock: true
-      },
-      {
-        skuId: 'prod_5 - Bluetooth Speaker',
-        currentStock: 8,
-        dailyDemand: 2,
-        daysOfSupply: '4.0',
-        reorderQuantity: 60,
-        shouldRestock: true
-      }
-    ];
-  }
   // We can treat products with stock less than 3000 as potential restock candidates
   // given total stock is aggregated across 50 stores.
   const products = await Product.find({ stock: { $lt: 3000 } });
@@ -158,18 +105,6 @@ const getRestockRecommendation = async () => {
 };
 
 const getBusinessInsights = async () => {
-  if (mongoose.connection.readyState !== 1) {
-    return {
-      categoryTrends: [
-        { _id: 'Electronics', totalRevenue: 150000 },
-        { _id: 'Accessories', totalRevenue: 85000 },
-      ],
-      customerSegments: [
-        { _id: 'Walk-in Customer', totalSpent: 65000 },
-        { _id: 'Corporate Corp', totalSpent: 120000 },
-      ]
-    };
-  }
   // 1. Sales by Category
   const categoryTrends = await Sale.aggregate([
     {
