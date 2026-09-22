@@ -1,0 +1,13 @@
+{
+  "name": "inventory-management-system-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:server": "npm run dev --prefix inventory-management-system/server",
+    "dev:client": "npm run dev --prefix inventory-management-system/client",
+    "dev": "npm run dev --prefix inventory-management-system/client",
+    "start:server": "npm start --prefix inventory-management-system/server",
+    "build:server": "npm run build --prefix inventory-management-system/server",
+    "build:client": "npm run build --prefix inventory-management-system/client"
+  }
+}

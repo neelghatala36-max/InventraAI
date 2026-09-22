@@ -1,0 +1,378 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #F8FAFC;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  color: #1E293B;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif !important;
+  color: #0F172A;
+  font-weight: 700 !important;
+}
+
+.input-field {
+  width: 100%;
+  outline: none;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s ease;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.input-field:focus {
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.input-field-error {
+  border: 1px solid #EF4444;
+}
+
+li.ant-menu-item {
+  padding: 0 1rem !important;
+  border-radius: 8px !important;
+  margin: 6px 12px !important;
+  transition: all 0.3s ease !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer !important;
+}
+
+li.ant-menu-item a {
+  cursor: pointer !important;
+}
+
+li.ant-menu-item .ant-menu-item-icon,
+li.ant-menu-item .ant-menu-item-icon svg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), filter 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+li.ant-menu-item:hover .ant-menu-item-icon,
+li.ant-menu-item:hover .ant-menu-item-icon svg {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 6px rgba(37, 99, 235, 0.3));
+}
+
+li.ant-menu-item:active .ant-menu-item-icon,
+li.ant-menu-item:active .ant-menu-item-icon svg {
+  transform: scale(0.96);
+  filter: drop-shadow(0 0 3px rgba(37, 99, 235, 0.15));
+}
+
+html.dark li.ant-menu-item:hover .ant-menu-item-icon,
+html.dark li.ant-menu-item:hover .ant-menu-item-icon svg {
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.4));
+}
+
+html.dark li.ant-menu-item:active .ant-menu-item-icon,
+html.dark li.ant-menu-item:active .ant-menu-item-icon svg {
+  filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.2));
+}
+
+.ant-menu-item-selected {
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.08) 0%, rgba(37, 99, 235, 0.01) 100%) !important;
+  border-left: 3px solid #2563EB !important;
+  border-radius: 0 8px 8px 0 !important;
+  color: #2563EB !important;
+  font-weight: 600 !important;
+}
+
+html.dark .ant-menu-item-selected {
+  background: linear-gradient(90deg, rgba(96, 165, 250, 0.12) 0%, rgba(96, 165, 250, 0.01) 100%) !important;
+  border-left: 3px solid #60A5FA !important;
+  color: #60A5FA !important;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 10px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Tables */
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.custom-table th {
+  background-color: #F8FAFC;
+  padding: 16px 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748B;
+  border-bottom: 1px solid #E2E8F0;
+  text-align: left;
+}
+
+.custom-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #F1F5F9;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.query-filter {
+  width: 100%;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.02), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+  margin-bottom: 1.5rem;
+  border: 1px solid #F1F5F9;
+}
+
+.sales {
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.02), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+  border: 1px solid #F1F5F9;
+}
+
+.number-card {
+  width: 100%;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.03), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.number-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.08), 0 8px 10px -6px rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.number-card h3 {
+  font-size: 0.8rem;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.number-card h1 {
+  font-size: 2rem;
+  color: #0F172A;
+  margin: 0;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+}
+
+.update-sale-modal {
+  border: 1px solid #E2E8F0;
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+.bulk-delete-btn {
+  padding: 0 .5rem;
+  height: 30px;
+  background-color: #EF4444 !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  color: #fff;
+}
+
+.bulk-delete-btn:hover {
+  background-color: #DC2626 !important;
+}
+
+.table-btn-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  padding: 0;
+  margin-right: .3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.table-btn {
+  border-radius: 8px;
+  height: 32px;
+  padding: 0 0.8rem;
+  margin-right: .3rem;
+  font-weight: 600;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Dark Mode Overrides */
+html.dark body {
+  background-color: #05070C;
+  color: #F1F5F9;
+}
+
+html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+  color: #F8FAFC !important;
+}
+
+html.dark .number-card, html.dark .query-filter, html.dark .sales {
+  background: rgba(11, 15, 25, 0.7);
+  backdrop-filter: blur(16px);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+html.dark .number-card:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.15), 0 8px 10px -6px rgba(99, 102, 241, 0.15);
+}
+
+html.dark .number-card h1 {
+  color: #F8FAFC;
+}
+
+html.dark .number-card h3 {
+  color: #94A3B8;
+}
+
+html.dark .custom-table th {
+  background-color: rgba(11, 15, 25, 0.3);
+  color: #94A3B8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html.dark .custom-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #CBD5E1;
+}
+
+html.dark .custom-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+html.dark .label {
+  color: #94A3B8;
+}
+
+html.dark .input-field {
+  background-color: #0B0F19;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #F8FAFC;
+}
+
+html.dark .input-field::placeholder {
+  color: #64748B;
+}
+
+.auth-page-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #F8FAFC;
+}
+
+html.dark .auth-page-container {
+  background-color: #05070C;
+}
+
+html.dark .ant-card {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: rgba(11, 15, 25, 0.7) !important;
+  backdrop-filter: blur(16px);
+}
+
+html.dark .ant-card-head {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .ant-card-head-title {
+  color: #F8FAFC !important;
+}
+
+.logo-text {
+  color: #0F172A;
+}
+
+html.dark .logo-text {
+  color: #F8FAFC;
+}
+
+/* Sidebar Logo Hover & Click Effect */
+.sidebar-logo-container {
+  outline: none;
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-logo-container:hover .logo-icon-wrapper {
+  transform: scale(1.06);
+  background-color: rgba(37, 99, 235, 0.16) !important;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.25);
+}
+
+.sidebar-logo-container:active .logo-icon-wrapper {
+  transform: scale(0.96);
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.15);
+}
+
+.sidebar-logo-container:hover .logo-text {
+  opacity: 0.92;
+}
+
+html.dark .sidebar-logo-container:hover .logo-icon-wrapper {
+  background-color: rgba(96, 165, 250, 0.2) !important;
+  box-shadow: 0 0 16px rgba(96, 165, 250, 0.35);
+}
+
+html.dark .sidebar-logo-container:active .logo-icon-wrapper {
+  transform: scale(0.96);
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.2);
+}
