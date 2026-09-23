@@ -16,6 +16,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://inventory-navy.vercel.app',
+  'https://inventraaii-c4t8vs3pm-neel-a8be.vercel.app',
   ...(config.client_url ? config.client_url.split(',').map((url) => url.trim()) : [])
 ];
 
