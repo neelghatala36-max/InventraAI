@@ -4,10 +4,14 @@ import { clearAccessToken } from '@/actions';
 import { useAuthStore } from '@/store/authStore';
 import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE_URL =
-  typeof window !== 'undefined'
-    ? (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api/v1')
-    : 'http://localhost:5000/api/v1';
+const getBaseUrl = (): string => {
+  const envUrl = (process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BASE_URL || '').trim();
+  const rawBaseUrl = envUrl.length > 0 ? envUrl : 'http://localhost:5000/api/v1';
+  const cleanUrl = rawBaseUrl.replace(/\/+$/, '');
+  return cleanUrl.endsWith('/api/v1') ? cleanUrl : `${cleanUrl}/api/v1`;
+};
+
+const API_BASE_URL = getBaseUrl();
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,

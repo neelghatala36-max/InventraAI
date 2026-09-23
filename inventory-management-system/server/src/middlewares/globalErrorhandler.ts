@@ -12,15 +12,15 @@ import CustomError from '../errors/customError';
 import httpStatus from 'http-status';
 
 const globalErrorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  console.error('❌ Server Error Caught:', err);
+
   const errorResponse = {
     success: false,
     statusCode: 500,
-    message: 'Internal Server Error!',
+    message: err?.message || 'Internal Server Error!',
     errors: {},
-    stack: config.nodeEnv === 'dev' ? err.stack : null
+    stack: config.nodeEnv === 'production' ? null : err.stack
   };
-
-  // console.log(err);
 
   if (err instanceof ZodError) {
     const errors = zodErrorSanitize(err);
