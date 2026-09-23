@@ -17,15 +17,20 @@ const baseQuery = fetchBaseQuery({
 })
 
 const customBaseQuery: BaseQueryFn<FetchArgs, BaseQueryApi, DefinitionType> = async (args, api, extraOptions): Promise<any> => {
-  const result = await baseQuery(args, api, extraOptions)
+  const result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
-    window.location.href = '/login'
-    api.dispatch(logoutUser())
+    const isAuthRoute = typeof window !== 'undefined' && 
+      (window.location.pathname === '/login' || window.location.pathname === '/register');
+
+    if (!isAuthRoute) {
+      api.dispatch(logoutUser());
+      window.location.href = '/login';
+    }
   }
 
-  return result
-}
+  return result;
+};
 
 
 export const baseApi = createApi({

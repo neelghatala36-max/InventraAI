@@ -1,9 +1,10 @@
 import { z } from 'zod';
 
 const registerSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  password: z.string().min(6, { message: 'password must have 6 characters' })
+  name: z.string({ required_error: 'Name is required' }).trim().min(2, { message: 'Name must have at least 2 characters' }),
+  email: z.string({ required_error: 'Email is required' }).trim().email({ message: 'Please enter a valid email address' }),
+  password: z.string({ required_error: 'Password is required' }).min(6, { message: 'Password must have at least 6 characters' }),
+  confirmPassword: z.string().optional()
 });
 
 const updatedProfileSchema = z.object({
@@ -14,8 +15,8 @@ const updatedProfileSchema = z.object({
 });
 
 const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6, { message: 'password must have 6 characters' })
+  email: z.string({ required_error: 'Email is required' }).trim().email({ message: 'Please enter a valid email address' }),
+  password: z.string({ required_error: 'Password is required' }).min(1, { message: 'Password is required' })
 });
 
 const changePasswordSchema = z.object({

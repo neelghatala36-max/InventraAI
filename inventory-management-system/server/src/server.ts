@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import app from './app';
 import config from './config';
 
+import { ensureDemoUsers } from './utils/ensureDemoUsers';
+
 let server: Server;
 
 async function main() {
@@ -19,6 +21,9 @@ async function main() {
     console.log('Connecting to MongoDB database...');
     await mongoose.connect(config.database_url as string);
     console.log('✅ MongoDB connected successfully!');
+
+    // Ensure demo accounts exist so sign-in never fails for visitors
+    await ensureDemoUsers();
 
     server = app.listen(port, '0.0.0.0', () => {
       console.log(`🚀 InventraAI server listening on port ${port} [env: ${config.nodeEnv || 'development'}]`);

@@ -12,7 +12,9 @@ import CustomError from '../errors/customError';
 import httpStatus from 'http-status';
 
 const globalErrorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
-  console.error('❌ Server Error Caught:', err);
+  if (config.nodeEnv !== 'production') {
+    console.error('❌ Server Error Caught:', err?.name || 'Error', err?.message);
+  }
 
   const errorResponse = {
     success: false,
@@ -46,12 +48,12 @@ const globalErrorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     errorResponse.statusCode = err.statusCode;
     errorResponse.message = err.message;
     errorResponse.errors = errors;
-  } else if (err?.code === 11000) {
+  } else if (err?.code === 11000 && err?.keyValue) {
     const [key, value] = Object.entries(err.keyValue)[0];
 
     errorResponse.statusCode = httpStatus.CONFLICT;
-    errorResponse.message = 'Duplicate Entities!';
-    errorResponse.errors = { [key]: `${value} is Already Exists!` };
+    errorResponse.message = `${key.charAt(0).toUpperCase() + key.slice(1)} already exists!`;
+    errorResponse.errors = { [key]: `${value} is already registered.` };
   }
 
   return res.status(errorResponse.statusCode).json(errorResponse);

@@ -17,26 +17,41 @@ class UserServices {
 
   // register new user
   async register(payload: any) {
-    if (payload.password !== payload.confirmPassword) {
+    if (payload.confirmPassword && payload.password !== payload.confirmPassword) {
       throw new CustomError(httpStatus.BAD_REQUEST, 'Passwords do not match');
     }
 
-    const user = await this.model.create(payload);
+    const email = payload.email?.toLowerCase().trim();
+    const name = payload.name?.trim();
+
+    const user = await this.model.create({
+      ...payload,
+      email,
+      name
+    });
+
     const token = generateToken({ _id: user._id, email: user.email });
-    return { token, user };
+    const userObj = user.toObject();
+    delete (userObj as any).password;
+
+    return { token, user: userObj };
   }
 
   // login existing user
   async login(payload: { email: string; password: string }) {
-    const user = await this.model.findOne({ email: payload.email }).select('+password');
+    const email = payload.email?.toLowerCase().trim();
+    const user = await this.model.findOne({ email }).select('+password');
 
     if (user) {
       await verifyPassword(payload.password, user.password);
 
       const token = generateToken({ _id: user._id, email: user.email });
-      return { token, user };
+      const userObj = user.toObject();
+      delete (userObj as any).password;
+
+      return { token, user: userObj };
     } else {
-      throw new CustomError(httpStatus.BAD_REQUEST, 'WrongCredentials');
+      throw new CustomError(httpStatus.UNAUTHORIZED, 'Invalid email or password', 'WrongCredentials');
     }
   }
 
