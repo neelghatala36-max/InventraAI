@@ -7,7 +7,26 @@ import globalErrorHandler from './middlewares/globalErrorhandler';
 
 import config from './config';
 
+import mongoose from 'mongoose';
+import { ensureDemoUsers } from './utils/ensureDemoUsers';
+
 const app: Application = express();
+
+let isDbConnected = false;
+app.use(async (_req, _res, next) => {
+  if (!isDbConnected && config.database_url) {
+    try {
+      if (mongoose.connection.readyState !== 1) {
+        await mongoose.connect(config.database_url);
+        ensureDemoUsers().catch(console.error);
+      }
+      isDbConnected = true;
+    } catch (err) {
+      console.error('Database connection error in middleware:', err);
+    }
+  }
+  next();
+});
 
 app.use(express.json());
 app.use(morgan('dev'));
