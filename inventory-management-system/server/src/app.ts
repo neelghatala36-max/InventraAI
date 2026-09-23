@@ -17,7 +17,7 @@ app.use(async (_req, _res, next) => {
   if (!isDbConnected && config.database_url) {
     try {
       if (mongoose.connection.readyState !== 1) {
-        await mongoose.connect(config.database_url);
+        await mongoose.connect(config.database_url, { dbName: 'inventra-ai' });
         ensureDemoUsers().catch(console.error);
       }
       isDbConnected = true;

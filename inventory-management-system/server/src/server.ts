@@ -19,8 +19,8 @@ async function main() {
 
   try {
     console.log('Connecting to MongoDB database...');
-    await mongoose.connect(config.database_url as string);
-    console.log('✅ MongoDB connected successfully!');
+    await mongoose.connect(config.database_url as string, { dbName: 'inventra-ai' });
+    console.log('✅ MongoDB connected successfully to database inventra-ai!');
 
     // Ensure demo accounts exist so sign-in never fails for visitors
     await ensureDemoUsers();
